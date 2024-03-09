@@ -1,0 +1,20 @@
+#buton {
+	width: 170px;
+	height: 20px;
+    background: #dce7e1;
+    cursor: default;
+    transition: all 1s;
+}
+#buton:hover {
+    width: 170px;
+	height: 20px;
+	color:  white;
+    background: #44a051;
+    cursor: default;
+}
+
+tr:nth-child(even):hover {
+    background-color: #776f6f;
+  }
+
+
