@@ -9,13 +9,13 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = lab4template
 build_property.RootNamespace = lab4template
-build_property.ProjectDir = c:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\lab4template\
+build_property.ProjectDir = C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\lab4template\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = c:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\lab4template
+build_property.MSBuildProjectDirectory = C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\lab4template
 build_property._RazorSourceGeneratorDebug = 
 
 [C:/Users/Dell/Documents/GitHub/Ceng382_23_24_s_202011031/lab4template/Pages/Error.cshtml]
@@ -24,6 +24,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Dell/Documents/GitHub/Ceng382_23_24_s_202011031/lab4template/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Dell/Documents/GitHub/Ceng382_23_24_s_202011031/lab4template/Pages/lab5page/lab5page.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcbGFiNXBhZ2VcbGFiNXBhZ2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Dell/Documents/GitHub/Ceng382_23_24_s_202011031/lab4template/Pages/Privacy.cshtml]

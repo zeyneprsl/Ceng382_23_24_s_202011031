@@ -3,12 +3,6 @@
 @{
     ViewData["Title"] = "Home page";
 }
-<div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm border-primary">
-          <div class="card-header py-3 text-bg-primary border-primary">
-            <h4 class="my-0 fw-normal"><a class="nav-link text-dark" asp-area="" asp-page="/lab5page">Yeni Sayfa</a></h4>
-          </div>
-
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
 </div>
@@ -65,7 +59,17 @@
           </div>
         </div>
       </div>
-    </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">Calculate</h4>
+          </div>
+          <div class="card-body">
+            <button type="button" onclick="window.location.href='/lab5page'" class="w-100 btn btn-lg btn-outline-primary">Go to lab 5 page</button>
+        </div>
+        </div>
+      </div>
+    </div>  
 
     <h2 class="display-6 text-center mb-4">Compare plans</h2>
 
