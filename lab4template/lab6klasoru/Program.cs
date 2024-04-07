@@ -1,26 +1,209 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
+﻿// Room class definition
 public class Room
 {
-    public string RoomId { get; set; } = "";
-    public string RoomName { get; set; }="";
+    private string _roomId;
+    private string _roomName;
+    private int _capacity;
 
-    public int Capacity { get; set; }
-
-    public static implicit operator Room(string v)
+    public string RoomId
     {
-        throw new NotImplementedException();
+        get { return _roomId; }
+        protected set
+        {
+            if (value != null)
+                _roomId = value;
+            else
+                throw new ArgumentNullException(nameof(value), "RoomId cannot be null.");
+        }
+    }
+
+    public string RoomName
+    {
+        get { return _roomName; }
+        protected set
+        {
+            if (value != null)
+                _roomName = value;
+            else
+                throw new ArgumentNullException(nameof(value), "RoomName cannot be null.");
+        }
+    }
+
+    public int Capacity
+    {
+        get { return _capacity; }
+        protected set { _capacity = value; }
+    }
+
+    public Room(string roomId, string roomName, int capacity)
+    {
+        RoomId = roomId;
+        RoomName = roomName;
+        Capacity = capacity;
     }
 }
 
+// Reservation class definition
 public class Reservation
 {
-    public Room Room { get; set; }="";
-    public DateTime DateTime { get; set; }
-    public string ReserverName { get; set; }="";
+    private DateTime _dateTime;
+    private string _reserverName;
+    private Room _room;
+
+    public DateTime DateTime
+    {
+        get { return _dateTime; }
+        protected set { _dateTime = value; }
+    }
+
+    public string ReserverName
+    {
+        get { return _reserverName; }
+        protected set
+        {
+            if (value != null)
+                _reserverName = value;
+            else
+                throw new ArgumentNullException(nameof(value), "ReserverName cannot be null.");
+        }
+    }
+
+    public Room Room
+    {
+        get { return _room; }
+        protected set { _room = value; }
+    }
+
+    public Reservation(DateTime dateTime, string reserverName, Room room)
+    {
+        DateTime = dateTime;
+        ReserverName = reserverName;
+        Room = room;
+    }
+}
+// LogRecord class definition
+public class LogRecord
+{
+    private DateTime _timestamp;
+    private string _reserverName;
+    private string _roomName;
+
+    public DateTime Timestamp
+    {
+        get { return _timestamp; }
+        protected set { _timestamp = value; }
+    }
+
+    public string ReserverName
+    {
+        get { return _reserverName; }
+        protected set
+        {
+            if (value != null)
+                _reserverName = value;
+            else
+                throw new ArgumentNullException(nameof(value), "ReserverName cannot be null.");
+        }
+    }
+
+    public string RoomName
+    {
+        get { return _roomName; }
+        protected set
+        {
+            if (value != null)
+                _roomName = value;
+            else
+                throw new ArgumentNullException(nameof(value), "RoomName cannot be null.");
+        }
+    }
+
+    public LogRecord(DateTime timestamp, string reserverName, string roomName)
+    {
+        Timestamp = timestamp;
+        ReserverName = reserverName;
+        RoomName = roomName;
+    }
+}
+
+// ILogger interface definition
+public interface ILogger
+{
+    void Log(LogRecord log);
+}
+
+// FileLogger class definition implementing ILogger
+public class FileLogger : ILogger
+{
+    public void Log(LogRecord log)
+    {
+        // Implementation to log log records into JSON files
+        // You can implement this according to your specific requirements
+    }
+}
+
+// LogHandler class definition
+public class LogHandler
+{
+    private readonly ILogger _logger;
+
+    public LogHandler(ILogger logger)
+    {
+        _logger = logger;
+    }
+
+    public void AddLog(LogRecord log)
+    {
+        _logger.Log(log);
+    }
+}
+
+// IReservationRepository interface definition
+public interface IReservationRepository
+{
+    void AddReservation(Reservation reservation);
+    void DeleteReservation(Reservation reservation);
+    List<Reservation> GetAllReservations();
+}
+
+// ReservationRepository class definition implementing IReservationRepository
+public class ReservationRepository : IReservationRepository
+{
+    private List<Reservation> _reservations = new List<Reservation>();
+
+    public void AddReservation(Reservation reservation)
+    {
+        _reservations.Add(reservation);
+    }
+
+    public void DeleteReservation(Reservation reservation)
+    {
+        _reservations.Remove(reservation);
+    }
+
+    public List<Reservation> GetAllReservations()
+    {
+        return _reservations;
+    }
+}
+
+// RoomHandler class definition
+public class RoomHandler
+{
+    public List<Room> GetRoomsFromJson(string filePath)
+    {
+        try
+        {
+            string json = File.ReadAllText(filePath);
+            var rooms = JsonConvert.DeserializeObject<List<Room>>(json);
+            return rooms ?? new List<Room>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading rooms from JSON: {ex.Message}");
+            return new List<Room>();
+        }
+    }
 }
 
 public class ReservationHandler
@@ -59,41 +242,57 @@ public class ReservationHandler
     }
 }
 
-public partial class Program
+
+// IReservationService interface definition
+public interface IReservationService
 {
-    static void Main(string[] args)
+    void AddReservation(Reservation reservation);
+    void DeleteReservation(Reservation reservation);
+    void DisplayWeeklySchedule();
+}
+
+// ReservationService class definition implementing IReservationService
+public class ReservationService : IReservationService
+{
+    private readonly ReservationHandler _reservationHandler;
+
+    public ReservationService(ReservationHandler reservationHandler)
     {
-        List<Room> rooms = LoadRoomsFromJson("Data.json");
-
-        ReservationHandler handler = new ReservationHandler();
-
-        Room room = rooms.FirstOrDefault();
-        if (room != null)
-        {
-            Reservation reservation = new Reservation
-            {
-                Room = room,
-                DateTime = DateTime.Now.AddDays(1),
-                ReserverName = "John Doe"
-            };
-            handler.AddReservation(reservation);
-        }
-
-        handler.DisplayWeeklySchedule();
+        _reservationHandler = reservationHandler;
     }
 
-    static List<Room> LoadRoomsFromJson(string filePath)
+    // Implementing methods of IReservationService
+    public void AddReservation(Reservation reservation)
     {
-        try
+        _reservationHandler.AddReservation(reservation);
+    }
+
+    public void DeleteReservation(Reservation reservation)
+    {
+        _reservationHandler.DeleteReservation(reservation);
+    }
+
+    public void DisplayWeeklySchedule()
+    {
+        // Implementation to display weekly schedule
+        // You can implement this according to your specific requirements
+    }
+}
+
+// Program class definition
+public partial class Program
+{
+   public static void Main(string[] args)
+    {
+        RoomHandler roomHandler = new RoomHandler();
+        List<Room> rooms = roomHandler.GetRoomsFromJson("Data.json");
+
+        Console.WriteLine("Rooms from data.json:");
+
+        // Print the rooms
+        foreach (var room in rooms)
         {
-            string json = File.ReadAllText(filePath);
-            var rooms = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Room>>(json);
-            return rooms ?? new List<Room>();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error loading rooms from JSON: {ex.Message}");
-            return new List<Room>();
+            Console.WriteLine($"Room ID: {room.RoomId}, Room Name: {room.RoomName}, Capacity: {room.Capacity}");
         }
     }
 }
