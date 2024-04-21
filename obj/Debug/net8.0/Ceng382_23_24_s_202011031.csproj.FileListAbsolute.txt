@@ -1,0 +1,15 @@
+C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\obj\Debug\net8.0\Ceng382_23_24_s_202011031.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\obj\Debug\net8.0\Ceng382_23_24_s_202011031.AssemblyInfoInputs.cache
+C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\obj\Debug\net8.0\Ceng382_23_24_s_202011031.AssemblyInfo.cs
+C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\obj\Debug\net8.0\Ceng382_23_24_s_202011031.csproj.CoreCompileInputs.cache
+C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\obj\Debug\net8.0\Ceng382_23_24_s_202011031.sourcelink.json
+C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\bin\Debug\net8.0\Ceng382_23_24_s_202011031.exe
+C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\bin\Debug\net8.0\Ceng382_23_24_s_202011031.deps.json
+C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\bin\Debug\net8.0\Ceng382_23_24_s_202011031.runtimeconfig.json
+C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\bin\Debug\net8.0\Ceng382_23_24_s_202011031.dll
+C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\bin\Debug\net8.0\Ceng382_23_24_s_202011031.pdb
+C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\obj\Debug\net8.0\Ceng382_23_24_s_202011031.dll
+C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\obj\Debug\net8.0\refint\Ceng382_23_24_s_202011031.dll
+C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\obj\Debug\net8.0\Ceng382_23_24_s_202011031.pdb
+C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\obj\Debug\net8.0\Ceng382_23_24_s_202011031.genruntimeconfig.cache
+C:\Users\Dell\Documents\GitHub\Ceng382_23_24_s_202011031\obj\Debug\net8.0\ref\Ceng382_23_24_s_202011031.dll
