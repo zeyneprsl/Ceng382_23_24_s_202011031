@@ -1,31 +1,71 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
-public class RoomData
+class DataManager
 {
-    [JsonPropertyName("Room")]
-    public Room[] Rooms{get; set;}
+    private const string JsonFilePath = "Data.json";
+
+    public static ReservationHandler LoadReservationsFromJson()
+    {
+        if (File.Exists(JsonFilePath))
+        {
+            string json = File.ReadAllText(JsonFilePath);
+            return JsonConvert.DeserializeObject<ReservationHandler>(json);
+        }
+        else
+        {
+            return new ReservationHandler();
+        }
+    }
+
+    public static void SaveReservationsToJson(ReservationHandler handler)
+    {
+        string json = JsonConvert.SerializeObject(handler, Formatting.Indented);
+        File.WriteAllText(JsonFilePath, json);
+    }
 }
+
 public class Room
 {
-    [JsonPropertyName("roomId")]
-    public string roomId {get; set;}
-
-
-    [JsonPropertyName("roomName")]
-    public string roomName {get; set;}
-
-    [JsonPropertyName("capacity")]
-    public int capacity{get; set;}
+    public string? RoomId { get; set; } // '?' ekleyerek null atanabilir olarak belirtiyorum
+    public string? RoomName { get; set; } 
+    public string? Capacity { get; set; } 
 }
+
+public class ReservationHandler
+{
+    public List<Reservation> Reservations { get; set; }
+
+    public ReservationHandler()
+    {
+        Reservations = new List<Reservation>();
+    }
+
+    public void AddReservation(Reservation reservation)
+    {
+        Reservations.Add(reservation);
+    }
+
+    public void DeleteReservation(Reservation reservation)
+    {
+        Reservations.Remove(reservation);
+    }
+
+    public void DisplayWeeklySchedule()
+    {
+        Console.WriteLine("Weekly schedule:");
+        foreach (var reservation in Reservations)
+        {
+            Console.WriteLine(reservation);
+        }
+    }
+}
+
 public class Reservation
 {
-    public Room Room { get; set; }
+    public Room Room { get; set; } 
     public DateTime DateTime { get; set; }
     public string ReserverName { get; set; }
 
@@ -35,65 +75,88 @@ public class Reservation
         DateTime = dateTime;
         ReserverName = reserverName;
     }
-}
 
-public class ReservationHandler
-{
-    private List<Reservation> reservations = new List<Reservation>();
-
-    public void AddReservation(Reservation reservation)
+    public override string ToString()
     {
-        reservations.Add(reservation);
-    }
-
-    public void DeleteReservation(Reservation reservation)
-    {
-        reservations.Remove(reservation);
-    }
-
-    public void DisplayWeeklySchedule()
-    {
-        var nextWeek = DateTime.Now.AddDays(7);
-
-        var weeklySchedule = reservations
-            .Where(r => r.DateTime <= nextWeek)
-            .OrderBy(r => r.DateTime);
-
-        Console.WriteLine("This week's schedule:");
-
-        foreach (var reservation in weeklySchedule)
-        {
-            Console.WriteLine($"Room: {reservation.Room.roomName}, Date: {reservation.DateTime}, Reserved by: {reservation.ReserverName}");
-        }
+        return $"{DateTime}: {Room.RoomName} - {ReserverName}";
     }
 }
+
 class Program
 {
-    static void Main(String[]args)
+    static void Main()
     {
-        //define file path
-        string filePath = "Mylab6proje\\Data.json";
+        ReservationHandler handler = DataManager.LoadReservationsFromJson();
 
-        //Read from json
-        // 1 -> json to text // todo try catch 
-        string jsonString = File.ReadAllText(filePath);
-        // 2 -> decode text into meaningful classes
-        var roomData = JsonSerializer.Deserialize<RoomData>(
-                                jsonString, 
-                                new JsonSerializerOptions()
+        while (true)
         {
-                NumberHandling = JsonNumberHandling.AllowReadingFromString | 
-                JsonNumberHandling.WriteAsString
-        });
+            Console.WriteLine("Select an option:");
+            Console.WriteLine("1. Add reservation");
+            Console.WriteLine("2. Delete reservation");
+            Console.WriteLine("3. Display weekly schedule");
+            Console.WriteLine("4. Exit");
 
-        //print
-        if(roomData?.Rooms != null)
-        {
-            foreach (var room in roomData.Rooms)
+            string userInput = Console.ReadLine();
+
+            switch (userInput)
             {
-                Console.WriteLine($"Room ID : {room.roomId} RoomName : {room.roomName} Capacity : {room.capacity}");
+                case "1":
+                    AddReservation(handler);
+                    break;
+                case "2":
+                    DeleteReservation(handler);
+                    break;
+                case "3":
+                    handler.DisplayWeeklySchedule();
+                    break;
+                case "4":
+                    DataManager.SaveReservationsToJson(handler);
+                    return;
+                default:
+                    Console.WriteLine("Invalid option. Please select a valid option.");
+                    break;
             }
         }
+    }
 
+    static void AddReservation(ReservationHandler handler)
+    {
+        Console.WriteLine("Enter room ID:");
+        string roomId = Console.ReadLine();
+
+        Console.WriteLine("Enter room name:");
+        string roomName = Console.ReadLine();
+
+        Console.WriteLine("Enter room capacity:");
+        string capacity = Console.ReadLine();
+
+        Room room = new Room { RoomId = roomId, RoomName = roomName, Capacity = capacity };
+
+        Console.WriteLine("Enter reservation date and time (yyyy-MM-dd HH:mm):");
+        DateTime dateTime;
+        while (!DateTime.TryParse(Console.ReadLine(), out dateTime))
+        {
+            Console.WriteLine("Invalid date and time format. Please enter in the correct format (yyyy-MM-dd HH:mm):");
+        }
+
+        Console.WriteLine("Enter reserver name:");
+        string reserverName = Console.ReadLine();
+
+        handler.AddReservation(new Reservation(room, dateTime, reserverName));
+
+        Console.WriteLine("Reservation added successfully.");
+    }
+
+    static void DeleteReservation(ReservationHandler handler)
+    {
+        Console.WriteLine("Enter reservation index to delete:");
+        int index;
+        while (!int.TryParse(Console.ReadLine(), out index) || index < 0 || index >= handler.Reservations.Count)
+        {
+            Console.WriteLine("Invalid reservation index. Please enter a valid index:");
+        }
+
+        handler.DeleteReservation(handler.Reservations[index]);
+        Console.WriteLine("Reservation deleted successfully.");
     }
 }
