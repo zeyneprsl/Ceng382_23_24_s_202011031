@@ -36,10 +36,12 @@ public class Room
 public class ReservationHandler
 {
     public List<Reservation> Reservations { get; set; }
+    public List<Room> Rooms { get; set; }
 
     public ReservationHandler()
     {
         Reservations = new List<Reservation>();
+        Rooms = new List<Room>();
     }
 
     public void AddReservation(Reservation reservation)
@@ -60,8 +62,22 @@ public class ReservationHandler
             Console.WriteLine(reservation);
         }
     }
-}
 
+    public List<Reservation> GetAllReservations()
+    {
+        return Reservations;
+    }
+
+    public List<Room> GetRooms()
+    {
+        return Rooms;
+    }
+
+    public void SaveRooms(List<Room> rooms)
+    {
+        Rooms = rooms;
+    }
+}
 public class Reservation
 {
     public Room Room { get; set; } 
@@ -117,7 +133,30 @@ class Program
             }
         }
     }
+public class ReservationService : IReservationService
+{
+    private ReservationHandler _ReservationHandler;
 
+    public ReservationService(ReservationHandler reservationHandler)
+    {
+        _ReservationHandler = reservationHandler;
+    }
+
+    public void AddReservation(Reservation reservation)
+    {
+        _ReservationHandler.AddReservation(reservation);
+    }
+
+    public void DeleteReservation(Reservation reservation)
+    {
+        _ReservationHandler.DeleteReservation(reservation);
+    }
+
+    public void DisplayWeekSchedule()
+    {
+        _ReservationHandler.DisplayWeekSchedule();
+    }
+}
     static void AddReservation(ReservationHandler handler)
     {
         Console.WriteLine("Enter room ID:");

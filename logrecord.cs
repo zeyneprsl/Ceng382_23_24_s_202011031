@@ -1,18 +1,53 @@
 public class LogRecord
 {
-    public DateTime Timestamp { get; set; }
-    public string ReserveName { get; set; }
-    public string RoomName { get; set; }
+    private DateTime _timestamp;
+    private string _reserveName;
+    private string _roomName;
 
-    public LogRecord(DateTime timestamp, string reserveName, string roomName)
+    private LogRecord(DateTime timestamp, string reserveName, string roomName)
     {
-        Timestamp = timestamp;
-        ReserveName = reserveName;
-        RoomName = roomName;
+        _timestamp = timestamp;
+        _reserveName = reserveName;
+        _roomName = roomName;
+    }
+
+    public DateTime GetTimestamp()
+    {
+        return _timestamp;
+    }
+
+    public void SetTimestamp(DateTime timestamp)
+    {
+        _timestamp = timestamp;
+    }
+
+    public string GetReserveName()
+    {
+        return _reserveName;
+    }
+
+    public void SetReserveName(string reserveName)
+    {
+        _reserveName = reserveName;
+    }
+
+    public string GetRoomName()
+    {
+        return _roomName;
+    }
+
+    public void SetRoomName(string roomName)
+    {
+        _roomName = roomName;
+    }
+
+    public static LogRecord CreateLogRecord(DateTime timestamp, string reserveName, string roomName)
+    {
+        return new LogRecord(timestamp, reserveName, roomName);
     }
 
     public override string ToString()
     {
-        return $"[{Timestamp}] - Reservation by: {ReserveName}, Room: {RoomName}";
+        return $"[{_timestamp}] - Reservation by: {_reserveName}, Room: {_roomName}";
     }
 }
