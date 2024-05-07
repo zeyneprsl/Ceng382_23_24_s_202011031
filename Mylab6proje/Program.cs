@@ -6,7 +6,6 @@ using System.IO;
 class DataManager
 {
     private const string JsonFilePath = "Data.json";
-
     public static ReservationHandler LoadReservationsFromJson()
     {
         if (File.Exists(JsonFilePath))
