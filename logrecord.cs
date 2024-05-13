@@ -3,12 +3,14 @@ public class LogRecord
     private DateTime _timestamp;
     private string _reserveName;
     private string _roomName;
+    public string Message;
 
-    private LogRecord(DateTime timestamp, string reserveName, string roomName)
+    public LogRecord(DateTime timestamp, string reserveName, string roomName,string message)
     {
         _timestamp = timestamp;
         _reserveName = reserveName;
         _roomName = roomName;
+        Message=message;
     }
 
     public DateTime GetTimestamp()
@@ -41,9 +43,9 @@ public class LogRecord
         _roomName = roomName;
     }
 
-    public static LogRecord CreateLogRecord(DateTime timestamp, string reserveName, string roomName)
+    public static LogRecord CreateLogRecord(DateTime timestamp, string reserveName, string roomName,string message)
     {
-        return new LogRecord(timestamp, reserveName, roomName);
+        return new LogRecord(timestamp, reserveName, roomName,message);
     }
 
     public override string ToString()

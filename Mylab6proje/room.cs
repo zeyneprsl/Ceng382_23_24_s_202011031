@@ -1,45 +1,45 @@
 using System;
 public class Room
 {
-    private string? _roomId;
-    private string? _roomName;
-    private string? _capacity;
+    private string? RoomId;
+    private string? RoomName;
+    private string? Capacity;
 
     public Room(string? roomId, string? roomName, string? capacity)
     {
-        _roomId = roomId;
-        _roomName = roomName;
-        _capacity = capacity;
+        RoomId = roomId;
+        RoomName = roomName;
+        Capacity = capacity;
     }
 
     public string? GetRoomId()
     {
-        return _roomId;
+        return  RoomId;
     }
 
     public void SetRoomId(string? roomId)
     {
-        _roomId = roomId;
+        RoomId = roomId;
     }
 
     public string? GetRoomName()
     {
-        return _roomName;
+        return RoomName;
     }
 
     public void SetRoomName(string? roomName)
     {
-        _roomName = roomName;
+        RoomName = roomName;
     }
 
     public string? GetCapacity()
     {
-        return _capacity;
+        return Capacity;
     }
 
     public void SetCapacity(string? capacity)
     {
-        _capacity = capacity;
+        Capacity = capacity;
     }
 }
 
