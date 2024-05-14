@@ -2,24 +2,23 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-
-public class DataManager:ReservationHandler
+using System.Linq;
+public class DataManager : ReservationHandler
 {
     private const string JsonFilePath = "Data.json";
-    
+
     public static ReservationHandler LoadReservationsFromJson()
-{
-    if (File.Exists(JsonFilePath))
     {
-        string? json = File.ReadAllText(JsonFilePath);
-        if (json != null)
+        if (File.Exists(JsonFilePath))
         {
-            return JsonConvert.DeserializeObject<ReservationHandler>(json)!;
+            string? json = File.ReadAllText(JsonFilePath);
+            if (json != null)
+            {
+                return JsonConvert.DeserializeObject<ReservationHandler>(json)!;
+            }
         }
+        return new ReservationHandler();
     }
-    // If file doesn't exist or json is null, return a new instance of ReservationHandler
-    return new ReservationHandler();
-}
 
     public static void SaveReservationsToJson(ReservationHandler handler)
     {
@@ -44,19 +43,19 @@ public class RoomHandler
         _filePath = filePath;
     }
 
-   public List<Room> GetRooms()
-{
-    List<Room> rooms = new List<Room>();
-    if (File.Exists(_filePath))
+    public List<Room> GetRooms()
     {
-        string? json = File.ReadAllText(_filePath);
-        if (json != null)
+        List<Room> rooms = new List<Room>();
+        if (File.Exists(_filePath))
         {
-            rooms = JsonConvert.DeserializeObject<List<Room>>(json)!;
+            string? json = File.ReadAllText(_filePath);
+            if (json != null)
+            {
+                rooms = JsonConvert.DeserializeObject<List<Room>>(json)!;
+            }
         }
+        return rooms;
     }
-    return rooms;
-}
 
     public void SaveRooms(List<Room> rooms)
     {
@@ -169,7 +168,7 @@ public class ConsoleLogger : ILogger
 {
     public void Log(LogRecord log)
     {
-       Console.WriteLine(log.ToString());
+        Console.WriteLine(log.ToString());
     }
 }
 
@@ -185,8 +184,6 @@ public class Reservation
         Time = time;
         ReserverName = reserverName;
     }
-
-    // Getters and setters for Time and ReserverName (optional)
 
     public DateTime GetTime()
     {
@@ -208,6 +205,7 @@ public class Reservation
         ReserverName = reserverName;
     }
 }
+
 public class ReservationService : IReservationService
 {
     private ReservationHandler _ReservationHandler;
@@ -231,6 +229,36 @@ public class ReservationService : IReservationService
     {
         _ReservationHandler.DisplayWeeklySchedule();
     }
+
+    public static List<Reservation> DisplayReservationByReserver(string name)
+    {
+        return _ReservationHandler.Reservations.Where(r => r.ReserverName == name).ToList();
+    }
+
+    public static List<Reservation> DisplayReservationByRoomId(string Id)
+    {
+        return _ReservationHandler.Reservations.Where(r => r.Room.GetRoomId() == Id).ToList();
+    }
+}
+
+public class LogService
+{
+    private List<LogRecord> _logs;
+
+    public LogService(List<LogRecord> logs)
+    {
+        _logs = logs;
+    }
+
+    public static List<LogRecord> DisplayLogsByName(string name)
+    {
+        return _logs.Where(log => log.Message.Contains(name)).ToList();
+    }
+
+    public static List<LogRecord> DisplayLogs(DateTime start, DateTime end)
+    {
+        return _logs.Where(log => log.DateTime >= start && log.DateTime <= end).ToList();
+    }
 }
 
 class Program
@@ -238,6 +266,7 @@ class Program
     static void Main()
     {
         ReservationHandler handler = DataManager.LoadReservationsFromJson();
+        LogHandler logHandler = new LogHandler(new ConsoleLogger());
 
         while (true)
         {
@@ -245,7 +274,11 @@ class Program
             Console.WriteLine("1. Add reservation");
             Console.WriteLine("2. Delete reservation");
             Console.WriteLine("3. Display weekly schedule");
-            Console.WriteLine("4. Exit");
+            Console.WriteLine("4. Display reservations by reserver name");
+            Console.WriteLine("5. Display reservations by room ID");
+            Console.WriteLine("6. Display logs by name");
+            Console.WriteLine("7. Display logs by time interval");
+            Console.WriteLine("8. Exit");
 
             string? userInput = Console.ReadLine();
 
@@ -261,6 +294,34 @@ class Program
                     handler.DisplayWeeklySchedule();
                     break;
                 case "4":
+                    Console.WriteLine("Enter reserver name:");
+                    string? reserverName = Console.ReadLine();
+                    DisplayReservationsByReserverName(reserverName);
+                    break;
+                case "5":
+                    Console.WriteLine("Enter room ID:");
+                    string? roomId = Console.ReadLine();
+                    DisplayReservationsByRoomId(roomId);
+                    break;
+                case "6":
+                    Console.WriteLine("Enter username to search logs:");
+                    string? username = Console.ReadLine();
+                    DisplayLogsByUsername(username);
+                    break;
+                case "7":
+                    Console.WriteLine("Enter start date and end date (yyyy-MM-dd HH:mm):");
+                    DateTime start, end;
+                    while (!DateTime.TryParse(Console.ReadLine(), out start))
+                    {
+                        Console.WriteLine("Invalid start date format. Please enter in the correct format (yyyy-MM-dd HH:mm):");
+                    }
+                    while (!DateTime.TryParse(Console.ReadLine(), out end))
+                    {
+                        Console.WriteLine("Invalid end date format. Please enter in the correct format (yyyy-MM-dd HH:mm):");
+                    }
+                    DisplayLogsByTimeInterval(start, end);
+                    break;
+                case "8":
                     DataManager.SaveReservationsToJson(handler);
                     return;
                 default:
@@ -272,7 +333,6 @@ class Program
 
     static void AddReservation(ReservationHandler handler)
     {
-
         Console.WriteLine("Enter room ID:");
         string? roomId = Console.ReadLine();
 
@@ -285,23 +345,25 @@ class Program
         room.SetRoomId(roomId);
         room.SetRoomName(roomName);
         room.SetCapacity(capacity);
-        roomId=room.GetRoomId();
-        roomName=room.GetRoomName();
-        capacity=room.GetCapacity();
+        roomId = room.GetRoomId();
+        roomName = room.GetRoomName();
+        capacity = room.GetCapacity();
+
         Console.WriteLine("Enter reservation date and time (yyyy-MM-dd HH:mm):");
-       DateTime dateTime;
-    while (!DateTime.TryParse(Console.ReadLine(), out dateTime))
-    {
-        Console.WriteLine("Invalid date and time format. Please enter in the correct format (yyyy-MM-dd HH:mm):");
+        DateTime dateTime;
+        while (!DateTime.TryParse(Console.ReadLine(), out dateTime))
+        {
+            Console.WriteLine("Invalid date and time format. Please enter in the correct format (yyyy-MM-dd HH:mm):");
+        }
+
+        Console.WriteLine("Enter reserver name:");
+        string? reserverName = Console.ReadLine();
+
+        handler.AddReservation(new Reservation(room, dateTime, reserverName));
+
+        Console.WriteLine("Reservation added successfully.");
     }
 
-    Console.WriteLine("Enter reserver name:");
-    string? reserverName = Console.ReadLine();
-
-    handler.AddReservation(new Reservation(room, dateTime, reserverName));
-
-    Console.WriteLine("Reservation added successfully.");
-}
     static void DeleteReservation(ReservationHandler handler)
     {
         Console.WriteLine("Enter reservation index to delete:");
@@ -314,4 +376,41 @@ class Program
         handler.DeleteReservation(handler.Reservations[index]);
         Console.WriteLine("Reservation deleted successfully.");
     }
+
+    static void DisplayReservationsByReserverName(string name)
+    {
+        List<Reservation> reservations = ReservationService.DisplayReservationByReserver(name);
+        foreach (var reservation in reservations)
+        {
+            Console.WriteLine(reservation);
+        }
+    }
+
+    static void DisplayReservationsByRoomId(string id)
+    {
+        List<Reservation> reservations = ReservationService.DisplayReservationByRoomId(id);
+        foreach (var reservation in reservations)
+        {
+            Console.WriteLine(reservation);
+        }
+    }
+
+    static void DisplayLogsByUsername(string name)
+    {
+        List<LogRecord> logs = LogService.DisplayLogsByName(name);
+        foreach (var log in logs)
+        {
+            Console.WriteLine(log);
+        }
+    }
+
+    static void DisplayLogsByTimeInterval(DateTime start, DateTime end)
+    {
+        List<LogRecord> logs = LogService.DisplayLogs(start, end);
+        foreach (var log in logs)
+        {
+            Console.WriteLine(log);
+        }
+    }
 }
+
