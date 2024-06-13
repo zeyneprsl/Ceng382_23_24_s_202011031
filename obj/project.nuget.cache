@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "YpYZLVQfIggB+E4FIrbnlN9/4BeNywaKcb89BezI3RQMWnlxrL1Q3vj8QIMhJAseHTv7LS1KNJ1Uw7Wfmbygxw==",
+  "dgSpecHash": "B24EF0yiyYs=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Dell\\Documents\\GitHub\\Ceng382_23_24_s_202011031\\Ceng382_23_24_s_202011031.csproj",
+  "projectFilePath": "C:\\Users\\user\\OneDrive\\Masaüstü\\382\\Ceng382_23_24_s_202011031\\Ceng382_23_24_s_202011031.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Dell\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+    "C:\\Users\\user\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],
   "logs": []
 }
