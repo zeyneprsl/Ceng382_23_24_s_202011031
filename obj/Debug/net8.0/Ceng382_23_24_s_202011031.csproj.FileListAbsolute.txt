@@ -1,0 +1,6 @@
+C:\Users\user\OneDrive\Masaüstü\382\Ceng382_23_24_s_202011031\obj\Debug\net8.0\Ceng382_23_24_s_202011031.csproj.AssemblyReference.cache
+C:\Users\user\OneDrive\Masaüstü\382\Ceng382_23_24_s_202011031\obj\Debug\net8.0\Ceng382_23_24_s_202011031.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\OneDrive\Masaüstü\382\Ceng382_23_24_s_202011031\obj\Debug\net8.0\Ceng382_23_24_s_202011031.AssemblyInfoInputs.cache
+C:\Users\user\OneDrive\Masaüstü\382\Ceng382_23_24_s_202011031\obj\Debug\net8.0\Ceng382_23_24_s_202011031.AssemblyInfo.cs
+C:\Users\user\OneDrive\Masaüstü\382\Ceng382_23_24_s_202011031\obj\Debug\net8.0\Ceng382_23_24_s_202011031.csproj.CoreCompileInputs.cache
+C:\Users\user\OneDrive\Masaüstü\382\Ceng382_23_24_s_202011031\obj\Debug\net8.0\Ceng382_23_24_s_202011031.sourcelink.json
